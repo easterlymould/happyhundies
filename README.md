@@ -1,6 +1,6 @@
 # HappyHundiesFlaskApp
 
-Ambrose Pym
+made by Ambrose Pym
 
 Description: This project is a dynamic web application submitted that I made for a university module. It is a film website that displays a database of recommended films, and also enables the admin of the website (me), to submit and delete films from the database.
 
