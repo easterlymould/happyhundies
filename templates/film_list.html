@@ -49,13 +49,13 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="genre">Genre:</label>
-                    <input type="text" name="genre" class="form-control" value="{{ genre if genre != 'None' else '' }}">
+                    <input type="text" name="genre" class="form-control" value="{{ genre if genre != 'any' else '' }}">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="language">Language:</label>
-                    <input type="text" name="language" class="form-control" value="{{ language if language != 'None' else '' }}">
+                    <input type="text" name="language" class="form-control" value="{{ language if language != 'any' else '' }}">
                 </div>
                 <div class="form-group col-md-4">
                     <label for="imdb_score">IMDB Score:</label>
@@ -93,13 +93,13 @@
         <tbody>
             {% for film in films %}
                 <tr>
-                    <td>{{ film[1]}}</td>
-                    <td>{{ film[2]}}</td>
-                    <td>{{ film[3]}}</td>
-                    <td>{{ film[4]}}</td>
-                    <td>{{ film[5]}}</td>
-                    <td>{{ film[6]}}</td>
-                    <td>{{ film[7]}}</td>
+                    <td>{{ film[1] }}</td>
+                    <td>{{ film[2] }}</td>
+                    <td>{{ film[3] }}</td>
+                    <td>{{ film[4] }}</td>
+                    <td>{{ film[5] }}</td>
+                    <td>{{ film[6] }}</td>
+                    <td>{{ film[7] }}</td>
                     <td>
                         {% if film[8] %}
                             <a href="{{ film[8] }}" target="_blank" class="btn btn-primary">Link</a>
@@ -108,7 +108,7 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="7">No films found.</td>
+                    <td colspan="8">No films found.</td>
                 </tr>
             {% endfor %}
         </tbody>

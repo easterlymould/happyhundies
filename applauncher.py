@@ -117,16 +117,11 @@ def insert_film(name, year, runtime, genre, language, imdb_score, comment):
         return msg
 
 # Function for retrieving films from the database, with opportunity to create custom parameter queries to the database using the filter form, as well as also fetching the full film list.
-def fetch_films(decade=None,genre=None, runtime=None, language=None,imdb_score=None):
-    # Try used in case of exceptions, with "except" code occuring if error occurs
+def fetch_films(decade=None, genre=None, runtime=None, language=None, imdb_score=None):
     try:
-        # Connects to database
         conn = sqlite3.connect(DATABASE)
-        # Cursor to look through database and execute SQL queries
         cur = conn.cursor()
-        # Query that selects all films from the database. WHERE 1=1 used to select all results and provide basis for building custom query 
         query = "SELECT * FROM hhdata WHERE 1=1"
-        # List for parameters for the SQL query
         film_parameters = []
 
         if decade and decade != 'any':
@@ -135,44 +130,34 @@ def fetch_films(decade=None,genre=None, runtime=None, language=None,imdb_score=N
             query += " AND Year >= ? AND Year <= ?"
             film_parameters.extend([start_year, end_year])
 
-
-        # This query is handled differently, as there are only three fixed options, runtime is under 90 minutes, between 90 and 101 minutes, or any. Because there are only three, they can be added to the query directly.
         if runtime == "under_90":
             query += " AND Runtime < 90"
-        
         elif runtime == "90_to_101":
             query += " AND Runtime BETWEEN 90 AND 101"
-        elif runtime == "any":
-            pass
 
-        # If a genre was specified in the filtering form, the query gains condition to query the 'Genre' column. LIKE is for partial match, because the cells of the database contain multiple genres, so the just has to contain that word somewhere. For the parameters, this uses an f-string to preserve the string as a variable within the curly brackets. The % is an SQL Wildcard character for the LIKE operator, and it finds films in the database where the genre column contains the requested genre string.
-        if genre:
+        if genre and genre != 'any' and genre.strip():
             query += " AND Genre LIKE ?"
-            film_parameters.append(f"%{genre}%")
+            film_parameters.append(f"%{genre.strip()}%")
 
-        # This uses the same logic as I used for Genre
-        if language:
+        if language and language != 'any' and language.strip():
             query += " AND Language LIKE ?"
-            film_parameters.append(f"%{language}%")
+            film_parameters.append(f"%{language.strip()}%")
 
-        # If an imdb score is requested by the user and the imdb score requested is not "any", as specified in the drop-down form, then the query gains condition to look at the query column where the score in the column has to be larger than or equal to the requested score. This is because the scores in the database are over 7.0, over 7.5 and over 8.0 on IMDB.
         if imdb_score and imdb_score != 'any':
             query += " AND IMDBScore >= ?"
             film_parameters.append(float(imdb_score))
 
-        # Parameter list is converted to a tuple to be executed in SQL. SQL execution querying database table to retrieve list of films that meet the parameters of the search form or to pull the full film list. 
         cur.execute(query, tuple(film_parameters))
         films = cur.fetchall()
-
-    # Way to handle exceptions where there was an issue with the search/database, where it prints the error to the console and does not display any films
     except Exception as e:
         films = []
         print(f"Error during your search: {str(e)}")
     finally:
-        # Database connection closed
         conn.close()
-        # Return list of films fetched from database or returns empty list of films
         return films
+
+
+
 
 # App route for deleting a film, after clicking on a delete film button in the database
 @app.route('/delete_film', methods=['POST'])
@@ -216,11 +201,11 @@ def about():
 @app.route('/film_list')
 # Function for displaying films. It uses requests.args.get to retrieve the query parameters from the URL/form filter request and declares them as variables that can be used to then fetch the films
 def film_list():
-    decade = request.args.get('decade')
-    genre = request.args.get('genre')
-    runtime = request.args.get('runtime')
-    language = request.args.get('language')
-    imdb_score = request.args.get('imdb_score')
+    decade = request.args.get('decade', 'any')
+    genre = request.args.get('genre', 'any')
+    runtime = request.args.get('runtime', 'any')
+    language = request.args.get('language', 'any')
+    imdb_score = request.args.get('imdb_score', 'any')
 
 # Fetch_films function called, to then retrieve the films that meet the criteria from the database.
     films = fetch_films(decade=decade,genre=genre, runtime=runtime,language=language,imdb_score=imdb_score)

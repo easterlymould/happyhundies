@@ -11,7 +11,7 @@
 <body>
     <header class="header-navbar">
         <a href="/" class="logo-link">
-            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" style="height: 80px;">
+            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" class="header-logo">
         </a>
         <nav class="navbar">
             <div class="navbar-links">
@@ -21,7 +21,6 @@
             </div>
         </nav>
     </header>
-    {% include 'header.html' %}
     <div class="intro-container">
     <p>Happy Hundies is a website celebrating the films that manage to do a lot with a little amount of time. That's not to say we don't love longer films as well, but it felt high time for a dedicated website for those films perfect for a mid-week watch</p>
     <p>It is also an ongoing project that I built for university and am trying to add to bit by bit until it inevitably becomes everyone's new default homepage when they open their browsers</p>
