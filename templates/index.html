@@ -1,17 +1,16 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>HAPPY HUNDIES - HOME</title>
 </head>
 <body>
     <header class="header-navbar">
         <a href="/" class="logo-link">
-            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" style="height: 80px;">
+            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" class="header-logo">
         </a>
         <nav class="navbar">
             <div class="navbar-links">
@@ -21,40 +20,50 @@
             </div>
         </nav>
     </header>
-    {% include 'header.html' %}
-    <div class="intro-container">
-    <p>A database of films that are under 100 minutes and are loved by us. It's that simple!</p>
-    <p>Click on the film list above to get started...</p>
-    <p>Or if you're feeling plucky, click below for a random Happy Hundy</p>
-    </div>
-    <div class="plucky-container">
-        <p>You've gotta ask yourself a question: "Do I feel lucky?" Well, do ya, punk?</p> 
-        <p>Click here for a random film:</p>
-        <button type="button" id="pluckyButton">I'm feeling plucky</button>
-        <div id="filmDetails">
-            <h1 id="filmTitle"></h1>
-            <p id="filmRuntime"></p>
-            <p id="filmGenre"></p>
-            <p id="filmLanguage"></p>
-            <p id="filmIMDBScore"></p>
-            <p id="filmComment"></p>
+    
+    <div class="header-container">
+        <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" class="header-logo">
+        <div>
+            <h1>Happy Hundies</h1>
+            <h2>Short on Time, Big on Films</h2>
         </div>
     </div>
 
-
-</main> 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <div class="container mt-5">
+        <div class="intro-container text-center">
+            <p>A database of films that are under 100 minutes and are loved by us. It's that simple!</p>
+            <p>Click on the <a href="/film_list">Film List</a> to get started...</p>
+            <p>Or if you're feeling plucky, click below for a random Happy Hundy</p>
+        </div>
+        <div class="plucky-container text-center mt-4">
+            <p>You've gotta ask yourself a question: "Do I feel plucky?" Well, do ya, punk?</p>
+            <p>Click here for a random film:</p>
+            <button type="button" id="pluckyButton" class="btn btn-primary">I'm feeling plucky</button>
+            <div id="filmDetails" class="mt-4" style="display: none;">
+                <h2 id="filmTitle" class="film-title"></h2>
+                <p><span class="film-detail">Runtime: </span><span id="filmRuntime"></span></p>
+                <p><span class="film-detail">Genre: </span><span id="filmGenre"></span></p>
+                <p><span class="film-detail">Language: </span><span id="filmLanguage"></span></p>
+                <p><span class="film-detail">IMDB Score: </span><span id="filmIMDBScore"></span></p>
+                <p><span class="film-detail">Comment: </span><span id="filmComment"></span></p>
+                <p><span class="film-detail">Link: </span><a id="filmIMDBLink" href="" target="_blank">IMDB</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#pluckyButton').click(function() {
                 $.getJSON('{{ url_for("random_film") }}', function(data) {
                     if (data) {
                         $('#filmTitle').text(data.title + " (" + data.year + ")");
-                        $('#filmRuntime').text("Runtime: " + data.runtime + " minutes");
-                        $('#filmGenre').text("Genre: " + data.genre);
-                        $('#filmLanguage').text("Language: " + data.language);
-                        $('#filmIMDBScore').text("IMDB Score: " + data.imdb_score);
-                        $('#filmComment').text("Comment: " + data.comment);
+                        $('#filmRuntime').text(data.runtime + " minutes");
+                        $('#filmGenre').text(data.genre);
+                        $('#filmLanguage').text(data.language);
+                        $('#filmIMDBScore').text(data.imdb_score);
+                        $('#filmComment').text(data.comment);
+                        $('#filmIMDBLink').attr('href', data.imdb_link);
+                        $('#filmDetails').show();
                     } else {
                         $('#filmTitle').text("No films found.");
                         $('#filmDetails').hide();

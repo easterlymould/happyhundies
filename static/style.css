@@ -1,29 +1,29 @@
 .header-navbar {
   display: flex;
-  align-items: center; /* Aligns items vertically in the center */
-  justify-content: space-between; /* Logo on the left, navbar on the right */
-  padding: 10px 20px; /* Add padding as needed */
-  background-color: #fff; /* Or any other color */
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
 }
 
 .logo-link {
-  flex-shrink: 0; /* Prevents the logo from shrinking */
+  flex-shrink: 0;
 }
 
 .navbar {
-  flex-grow: 1; /* Allows the navbar to take up the remaining space */
+  flex-grow: 1;
   display: flex;
   align-items: center;
-  background-color: transparent; /* Keeps the navbar transparent or any color */
+  background-color: transparent;
 }
 
 .navbar-links {
   display: flex;
-    justify-content: center; /* Ensures links are centered in the navbar */
-    align-items: center; /* Vertical alignment if needed */
-    flex-grow: 1; /* Ensures it occupies all space within navbar */
-    background-color: #006c1b; /* Color can be changed as needed */
-    border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  background-color: #006c1b;
+  border-radius: 10px;
 }
 
 .navbar-links a {
@@ -31,12 +31,12 @@
   text-decoration: none;
   padding: 10px 20px;
   font-size: 16px;
-  margin-left: 10px; /* Adds space between links */
+  margin-left: 10px;
   border-radius: 10px;
 }
 
 .navbar-links a.active, .navbar-links a:hover {
-  background-color: #004c18; /* Darker green on hover/active */
+  background-color: #004c18;
 }
 
 @media (max-width: 768px) {
@@ -46,33 +46,25 @@
   }
 
   .navbar {
-      width: 100%; /* Full width for smaller screens */
+      width: 100%;
   }
 
   .navbar-links {
       justify-content: center;
-      width: 100%; /* Full width for smaller screens */
-      padding-top: 10px; /* Adds space between logo and navbar links on smaller screens */
+      width: 100%;
+      padding-top: 10px;
   }
 
   .navbar-links a {
-      display: block; /* Stack links vertically */
-      width: 100%; /* Full width links */
+      display: block;
+      width: 100%;
   }
 }
 
-
-.intro-container {
+.intro-container, .plucky-container {
   margin: 20px 50px;
   padding: 20px;
   background-color: #f5f5f5;
-  border-radius: 10px;
-}
-
-.plucky-container {
-  margin: 20px 50px;
-  padding: 20px;
-  background-color: #ffffff;
   border-radius: 10px;
 }
 
@@ -94,8 +86,6 @@ th, td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 10px;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
 }
 
 th {
@@ -119,26 +109,33 @@ th {
   border-radius: 4px;
 }
 
-
 .header-container {
   display: flex;
   align-items: center;
-  padding: 20px;
+  padding: 10px 20px;
+  background-color: #fff;
 }
 
 .header-logo {
-  height: 100px;
+  height: 80px;
   margin-right: 20px;
 }
 
 .header-container h1 {
   margin: 0;
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .header-container h2 {
   margin: 0;
-  font-size: 1.5em;
+  font-size: 1.2em;
   opacity: 0.7;
 }
 
+.film-title {
+  font-size: 1.5em;
+}
+
+.film-detail {
+  font-weight: bold;
+}

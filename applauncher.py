@@ -58,9 +58,10 @@ def admin():
             language = request.form.get('language')
             imdb_score = request.form.get('imdb_score')
             comment = request.form.get('comment')
+            imdb_link = request.form.get('imdb_link')
         # If the form for inputting a name of a film was satisfied then the function that inserts films is executed, which takes the contents of the form as its inputs
             if name:
-                result_message = insert_film(name, year, runtime, genre, language, imdb_score, comment)
+                result_message = insert_film(name, year, runtime, genre, language, imdb_score, comment, imdb_link)
                 films = fetch_films()
     # Providing that the required conditions have been met, it renders the admin page
     return render_template('admin.html',result_message=result_message,films=films)
@@ -80,7 +81,8 @@ def random_film():
             "genre": film[4],
             "language": film[5],
             "imdb_score": film[6],
-            "comment": film[7]
+            "comment": film[7],
+            "imdb_link": film[8]
         }
     else:
         film_data = None
