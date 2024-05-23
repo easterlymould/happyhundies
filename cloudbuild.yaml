@@ -16,7 +16,7 @@ steps:
       - '--image'
       - 'europe-west2-docker.pkg.dev/arctic-marking-424020-q9/happyhundies/happy:latest'
       - '--platform'
-      - '$managed'
+      - 'managed'
       - '--region'
       - 'europe-west2'
       - '--allow-unauthenticated'
