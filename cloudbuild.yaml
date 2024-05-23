@@ -1,0 +1,24 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'europe-west2-docker.pkg.dev/arctic-marking-424020-q9/happyhundies/happy:latest', '.']
+
+  # Push the Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'europe-west2-docker.pkg.dev/arctic-marking-424020-q9/happyhundies/happy:latest']
+
+  # Deploy the image to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'happyhundies'
+      - '--image'
+      - 'europe-west2-docker.pkg.dev/arctic-marking-424020-q9/happyhundies/happy:latest'
+      - '--platform'
+      - '$managed'
+      - '--region'
+      - 'europe-west2'
+      - '--allow-unauthenticated'
+options:
+  logging: CLOUD_LOGGING_ONLY
