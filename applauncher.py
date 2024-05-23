@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 import random
+import os
 
 app = Flask(__name__)
 
@@ -215,4 +216,5 @@ def film_list():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)
