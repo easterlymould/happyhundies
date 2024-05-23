@@ -1,3 +1,4 @@
+/* Base styles for the header and navbar */
 .header-navbar {
   display: flex;
   align-items: center;
@@ -6,80 +7,153 @@
   background-color: #fff;
 }
 
-.logo-link {
-  flex-shrink: 0;
+.logo-link img, .index-logo img {
+  height: 80px;  /* Adjust the height as needed */
+}
+
+.logo-link, .index-logo {
+  flex-shrink: 0;  /* Prevents the logo from shrinking */
 }
 
 .navbar {
-  flex-grow: 1;
   display: flex;
   align-items: center;
-  background-color: transparent;
+  flex-grow: 1;
 }
 
 .navbar-links {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* Distributes space evenly around links */
   align-items: center;
   flex-grow: 1;
   background-color: #006c1b;
   border-radius: 10px;
+  padding: 0 10px; /* Padding on the sides of the navbar */
 }
 
 .navbar-links a {
   color: white;
   text-decoration: none;
-  padding: 10px 20px;
+  padding: 10px 15px; /* Adjust padding for better spacing */
   font-size: 16px;
-  margin-left: 10px;
-  border-radius: 10px;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
 .navbar-links a.active, .navbar-links a:hover {
   background-color: #004c18;
 }
 
+/* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
   .header-navbar {
-      flex-direction: column;
-      align-items: flex-start;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 10px;
   }
 
-  .navbar {
-      width: 100%;
-  }
-
-  .navbar-links {
-      justify-content: center;
-      width: 100%;
-      padding-top: 10px;
-  }
-
-  .navbar-links a {
-      display: block;
-      width: 100%;
+  .logo-link img, .index-logo img {
+      height: 50px;
   }
 }
 
-.intro-container, .plucky-container {
+/* Base style for the index header logo */
+.header-container {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: #fff;  /* Consistent with other headers */
+}
+
+.header-logo {
+  height: 80px;  /* Standard height */
+  margin-right: 20px;  /* Space between the logo and the text */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header-logo {
+      height: 50px;  /* Smaller logo on mobile */
+  }
+
+  .header-container {
+      flex-direction: column;  /* Stack logo and text vertically on smaller screens */
+      align-items: center;  /* Center alignment for all items */
+      text-align: center;  /* Center align the text */
+  }
+
+  .header-container h1, .header-container h2 {
+      margin: 10px 0;  /* Adjust margin for better spacing */
+  }
+}
+
+/* Styles for cards */
+.card {
+  margin: 10px;
+  padding: 20px;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.2);  /* Enhanced shadow for 3D effect */
+  background-color: #fff;
+  border: none;  /* Removed the solid border for a cleaner look */
+  border-radius: 8px;  /* Rounded corners */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;  /* Smooth transformation on hover */
+}
+
+.card:hover {
+  transform: translateY(-5px);  /* Slight raise effect on hover */
+  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);  /* Deeper shadow for hovering effect */
+}
+
+.card p {
+  line-height: 1.5;  /* Improved line spacing for readability */
+  color: #333;  /* Slightly darker text for better readability */
+}
+
+.card a {
+  text-decoration: none;
+  color: #007bff;  /* Standard Bootstrap link color */
+  font-weight: bold;
+}
+
+.card a:hover {
+  text-decoration: underline;  /* Underline on hover for links */
+}
+
+
+/* Show/hide table and cards based on screen size */
+@media (max-width: 768px) {
+  .table {
+      display: none;
+  }
+  .card-container {
+      display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .table {
+      display: table;
+  }
+  .card-container {
+      display: none;
+  }
+}
+
+/* Additional UI styles */
+.filmlist-page-container, .intro-container, .plucky-container {
   margin: 20px 50px;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #f5f5f5; /* Ensure visibility with different background */
   border-radius: 10px;
 }
 
 .filmlist-page-container {
-  margin: 10px 40px;
-  padding: 10px;
-  background-color: #ffffff; 
-  border-radius: 10px;
+  background-color: #ffffff; /* Distinct background for the film list container */
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  margin: 20px 0;
 }
 
 th, td {
@@ -98,7 +172,7 @@ th {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 .form-field {
@@ -107,35 +181,4 @@ th {
   margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
-}
-
-.header-container {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #fff;
-}
-
-.header-logo {
-  height: 80px;
-  margin-right: 20px;
-}
-
-.header-container h1 {
-  margin: 0;
-  font-size: 1.5em;
-}
-
-.header-container h2 {
-  margin: 0;
-  font-size: 1.2em;
-  opacity: 0.7;
-}
-
-.film-title {
-  font-size: 1.5em;
-}
-
-.film-detail {
-  font-weight: bold;
 }

@@ -113,7 +113,28 @@
             {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('index') }}"><button type="button" class="btn btn-primary">Return to Homepage</button></a>
+
+    <div class="card-container">
+        {% for film in films %}
+        <div class="card">
+            <h3>{{ film[1] }}</h3>
+            <p><strong>Year:</strong> {{ film[2] }}</p>
+            <p><strong>Runtime:</strong> {{ film[3] }}</p>
+            <p><strong>Genre:</strong> {{ film[4] }}</p>
+            <p><strong>Language:</strong> {{ film[5] }}</p>
+            <p><strong>IMDB Score:</strong> {{ film[6] }}</p>
+            <p><strong>Comment:</strong> {{ film[7] }}</p>
+            <p><strong>Link:</strong> <a href="{{ film[8] }}" target="_blank">IMDB</a></p>
+        </div>
+        {% else %}
+        <div class="card">
+            <p>No films found.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+
+<a href="{{ url_for('index') }}"><button type="button" class="btn btn-primary">Return to Homepage</button></a>
 </div>
 </body>
 </html>
