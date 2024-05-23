@@ -88,21 +88,24 @@
 }
 
 /* Styles for cards */
-/* Styles for cards */
 .card {
-  margin: 5px; /* Slight margin to prevent touching the screen edges */
-  padding: 10px;
+  padding: 10px;  /* Sufficient padding inside the card */
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   background-color: #fff;
-  border-radius: 8px;
+  border-radius: 8px;  /* Rounded corners for aesthetics */
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  width: calc(100% - 10px); /* Subtracting margin from the full width */
+  width: 100%;  /* Set width to 100% to fill the container */
 }
 
 @media (max-width: 768px) {
+  .card-container {
+    padding: 0; /* Eliminate padding within the card container */
+    margin: 0; /* Eliminate margin on the card container */
+  }
+
   .card {
-    margin: 2px; /* Even smaller margin for mobile to maximize width */
-    width: calc(100% - 4px); /* Adjust width to be closer to full width of the screen */
+    margin: 0;  /* Eliminate margin around each card to maximize width */
+    width: 100%;  /* Ensure card uses the full width of its container */
   }
 }
 
