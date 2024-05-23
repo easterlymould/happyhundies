@@ -88,35 +88,49 @@
 }
 
 /* Styles for cards */
+/* Styles for cards */
 .card {
-  margin: 5px;  /* Center the card and maintain margin for spacing */
+  margin: 5px; /* Slight margin to prevent touching the screen edges */
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   background-color: #fff;
   border-radius: 8px;
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  width: calc(100%); /* Take full width minus some margin */
+  width: calc(100% - 10px); /* Subtracting margin from the full width */
 }
 
+@media (max-width: 768px) {
+  .card {
+    margin: 2px; /* Even smaller margin for mobile to maximize width */
+    width: calc(100% - 4px); /* Adjust width to be closer to full width of the screen */
+  }
+}
 
 .card:hover {
-  transform: translateY(-5px);  /* Slight raise effect on hover */
-  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);  /* Deeper shadow for hovering effect */
+  transform: translateY(-5px);
+  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
 }
 
 .card p {
-  line-height: 1.5;  /* Improved line spacing for readability */
-  color: #333;  /* Slightly darker text for better readability */
+  line-height: 1.5;
+  color: #333;
 }
 
 .card a {
   text-decoration: none;
-  color: #007bff;  /* Standard Bootstrap link color */
+  color: #007bff;
   font-weight: bold;
 }
 
 .card a:hover {
-  text-decoration: underline;  /* Underline on hover for links */
+  text-decoration: underline;
+}
+
+/* Responsive adjustments for mobile devices to ensure full utilization of space */
+@media (max-width: 768px) {
+  .card-container {
+    padding: 0; /* Removing padding to allow cards to use full width */
+  }
 }
 
 
