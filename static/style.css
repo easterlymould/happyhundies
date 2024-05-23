@@ -89,14 +89,15 @@
 
 /* Styles for cards */
 .card {
-  margin: 10px;
-  padding: 20px;
-  box-shadow: 0 6px 10px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.2);  /* Enhanced shadow for 3D effect */
+  margin: 5px;  /* Center the card and maintain margin for spacing */
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   background-color: #fff;
-  border: none;  /* Removed the solid border for a cleaner look */
-  border-radius: 8px;  /* Rounded corners */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;  /* Smooth transformation on hover */
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  width: calc(100%); /* Take full width minus some margin */
 }
+
 
 .card:hover {
   transform: translateY(-5px);  /* Slight raise effect on hover */
