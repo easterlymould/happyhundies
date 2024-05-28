@@ -96,7 +96,6 @@
   background-color: #fff;
   border-radius: 8px;  /* Rounded corners for aesthetics */
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  width: 100%;  /* Set width to 100% to fill the container */
 }
 
 .card:hover {
@@ -124,8 +123,11 @@
   .card-container {
     padding: 0; /* Removing padding to allow cards to use full width */
   }
-}
 
+  .card {
+    margin: 10px;  /* Add margin to create spacing between cards */
+  }
+}
 
 /* Show/hide table and cards based on screen size */
 @media (max-width: 768px) {
@@ -156,6 +158,14 @@
 
 .filmlist-page-container {
   background-color: #ffffff; /* Distinct background for the film list container */
+}
+
+.plucky-container p {
+  margin-bottom: 20px;
+}
+
+.plucky-container .btn {
+  margin-bottom: 10px;
 }
 
 .table {
@@ -189,4 +199,11 @@ th {
   margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+/* Specific styles for random film card to always be narrow */
+.random-film-card {
+  max-width: 400px;  /* Set a fixed max width to make it narrow */
+  margin-left: auto;
+  margin-right: auto;
 }

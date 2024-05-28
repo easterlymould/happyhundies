@@ -69,10 +69,21 @@ def admin():
 
 @app.route('/random_film')
 def random_film():
+    genre = request.args.get('genre', None)  # Get the genre parameter from the query string
+
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM hhdata")
+
+    if genre:
+        # Modify the SQL query to filter films containing the specified genre in the genre column
+        sql_query = "SELECT * FROM hhdata WHERE genre LIKE ?"
+        cur.execute(sql_query, ('%' + genre + '%',))
+    else:
+        # If no genre is specified, return any film
+        cur.execute("SELECT * FROM hhdata")
+
     films = cur.fetchall()
+
     if films:
         film = random.choice(films)
         film_data = {
@@ -86,9 +97,11 @@ def random_film():
             "imdb_link": film[8]
         }
     else:
-        film_data = None
+        film_data = None  # Return None if no films are found
+
     conn.close()
-    return jsonify(film_data)
+    return jsonify(film_data if film_data else {"error": "No films found"})
+
 
 # Function that is called when a new film is being inserted by the admin from the admin page. It takes form criteria about a film from the admin page as its inputs.
 def insert_film(name, year, runtime, genre, language, imdb_score, comment):
@@ -197,6 +210,10 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+@app.route('/randomfilms')
+def randomfilms():
+    return render_template('randomfilms.html')
 
 # App route for displaying the list of films https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 @app.route('/film_list')
