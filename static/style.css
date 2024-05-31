@@ -5,14 +5,15 @@
   justify-content: space-between;
   padding: 10px 20px;
   background-color: #fff;
+  box-sizing: border-box;
 }
 
 .logo-link img, .index-logo img {
-  height: 80px;  /* Adjust the height as needed */
+  height: 80px; /* Adjust the height as needed */
 }
 
 .logo-link, .index-logo {
-  flex-shrink: 0;  /* Prevents the logo from shrinking */
+  flex-shrink: 0; /* Prevents the logo from shrinking */
 }
 
 .navbar {
@@ -29,6 +30,7 @@
   background-color: #006c1b;
   border-radius: 10px;
   padding: 0 10px; /* Padding on the sides of the navbar */
+  box-sizing: border-box;
 }
 
 .navbar-links a {
@@ -46,14 +48,13 @@
 /* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
   .header-navbar {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      padding: 5px 10px;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
   }
 
   .logo-link img, .index-logo img {
-      height: 50px;
+    height: 50px;
   }
 }
 
@@ -62,98 +63,77 @@
   display: flex;
   align-items: center;
   padding: 20px;
-  background-color: #fff;  /* Consistent with other headers */
+  background-color: #fff; /* Consistent with other headers */
+  box-sizing: border-box;
 }
 
 .header-logo {
-  height: 80px;  /* Standard height */
-  margin-right: 20px;  /* Space between the logo and the text */
+  height: 80px; /* Standard height */
+  margin-right: 20px; /* Space between the logo and the text */
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .header-logo {
-      height: 50px;  /* Smaller logo on mobile */
+    height: 50px; /* Smaller logo on mobile */
   }
 
   .header-container {
-      flex-direction: column;  /* Stack logo and text vertically on smaller screens */
-      align-items: center;  /* Center alignment for all items */
-      text-align: center;  /* Center align the text */
+    flex-direction: column; /* Stack logo and text vertically on smaller screens */
+    align-items: center; /* Center alignment for all items */
+    text-align: center; /* Center align the text */
   }
 
   .header-container h1, .header-container h2 {
-      margin: 10px 0;  /* Adjust margin for better spacing */
+    margin: 10px 0; /* Adjust margin for better spacing */
   }
 }
 
-/* Styles for cards */
-.card {
-  padding: 20px;  /* Sufficient padding inside the card */
-  margin-top: 20px;
+
+/* Container for plucky-container and random-film-card */
+.container {
+  display: flex;
+  flex-direction: column;
+  margin: 10px auto;
+  padding: 20px;
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.plucky-container {
+  background-color: #f5f5f5;
+  padding: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  background-color: #fff;
-  border-radius: 8px;  /* Rounded corners for aesthetics */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
+.form-container, .plucky-container {
+  max-width: 100%;
 }
 
-.card p {
-  line-height: 1.5;
-  color: #333;
-}
-
-.card a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.card a:hover {
-  text-decoration: underline;
-}
-
-/* Responsive adjustments for mobile devices to ensure full utilization of space */
-@media (max-width: 768px) {
-  .card-container {
-    padding: 0; /* Removing padding to allow cards to use full width */
-  }
-
-  .card {
-    margin: 10px;  /* Add margin to create spacing between cards */
-  }
-}
-
-/* Show/hide table and cards based on screen size */
-@media (max-width: 768px) {
-  .table {
-      display: none;
-  }
-  .card-container {
-      display: block;
-  }
-}
-
-@media (min-width: 769px) {
-  .table {
-      display: table;
-  }
-  .card-container {
-      display: none;
+@media (min-width: 992px) {
+  .plucky-container, .random-film-card {
+    flex: 1;
+    margin: 10px;
   }
 }
 
 /* Additional UI styles */
-.filmlist-page-container, .intro-container, .plucky-container {
-  margin: 10px 30px;
+.filmlist-page-container, .intro-container {
+  margin: 10px auto;
   padding: 20px;
   background-color: #f5f5f5; /* Ensure visibility with different background */
   border-radius: 10px;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .filmlist-page-container {
@@ -191,6 +171,7 @@ th {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   margin-bottom: 40px;
+  box-sizing: border-box;
 }
 
 .form-field {
@@ -199,13 +180,27 @@ th {
   margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
-/* Specific styles for random film card to always be narrow */
+/* Specific styles for random film card */
 .random-film-card {
-  max-width: 400px;  /* Set a fixed max width to make it narrow */
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.random-film-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
 }
 
 /* Flexbox styles */
@@ -232,12 +227,13 @@ th {
 /* Ensure the plucky container and random film card are side by side on larger screens */
 @media (min-width: 992px) {
   .plucky-container {
-    width: 400px; /* Fixed width for the plucky container */
+    flex: 1;
+    margin-right: 20px;
   }
 
   .random-film-card {
-    margin-top: 0; /* Remove top margin to align with plucky container */
-    padding-top: 0; /* Remove top padding to align with plucky container */
+    flex: 1;
+    margin-left: 20px;
   }
 }
 
@@ -245,5 +241,7 @@ th {
   .plucky-container,
   .random-film-card {
     width: 100%; /* Ensure full width for both containers on small screens */
+    margin: 10px auto; /* Add margins to match other containers */
+    padding: 20px;
   }
 }
