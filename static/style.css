@@ -207,3 +207,43 @@ th {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Flexbox styles */
+.d-flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-lg-row {
+  flex-direction: row;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-start {
+  align-items: flex-start;
+}
+
+/* Ensure the plucky container and random film card are side by side on larger screens */
+@media (min-width: 992px) {
+  .plucky-container {
+    width: 400px; /* Fixed width for the plucky container */
+  }
+
+  .random-film-card {
+    margin-top: 0; /* Remove top margin to align with plucky container */
+    padding-top: 0; /* Remove top padding to align with plucky container */
+  }
+}
+
+@media (max-width: 992px) {
+  .plucky-container,
+  .random-film-card {
+    width: 100%; /* Ensure full width for both containers on small screens */
+  }
+}
