@@ -89,8 +89,7 @@
   }
 }
 
-
-/* Container for plucky-container and random-film-card */
+/* Flexbox container for plucky-container and random-film-card */
 .container {
   display: flex;
   flex-direction: column;
@@ -120,9 +119,9 @@
 }
 
 @media (min-width: 992px) {
-  .plucky-container, .random-film-card {
+  .plucky-container {
     flex: 1;
-    margin: 10px;
+    margin-right: 20px;
   }
 }
 
@@ -193,8 +192,8 @@ th {
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
@@ -237,11 +236,23 @@ th {
   }
 }
 
-@media (max-width: 992px) {
-  .plucky-container,
-  .random-film-card {
-    width: 100%; /* Ensure full width for both containers on small screens */
-    margin: 10px auto; /* Add margins to match other containers */
-    padding: 20px;
+/* Responsive adjustments for the film list view */
+@media (max-width: 768px) {
+  .d-none {
+    display: none !important;
+  }
+
+  .d-block {
+    display: block !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .d-none {
+    display: block !important;
+  }
+
+  .d-block {
+    display: none !important;
   }
 }
