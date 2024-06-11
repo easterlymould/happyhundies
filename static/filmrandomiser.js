@@ -69,4 +69,8 @@ $(document).ready(function() {
     $('#romanceButton').click(function() {
         fetchFilmDetails('Romance');
     });
+
+    $('#familyButton').click(function() {
+        fetchFilmDetails('Family');
+    });
 });
