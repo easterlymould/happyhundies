@@ -60,9 +60,10 @@ def admin():
             imdb_score = request.form.get('imdb_score')
             comment = request.form.get('comment')
             imdb_link = request.form.get('imdb_link')
+            tmdb_key = request.form.get('tmdb_key')
         # If the form for inputting a name of a film was satisfied then the function that inserts films is executed, which takes the contents of the form as its inputs
             if name:
-                result_message = insert_film(name, year, runtime, genre, language, imdb_score, comment, imdb_link)
+                result_message = insert_film(name, year, runtime, genre, language, imdb_score, comment, imdb_link, tmdb_key)
                 films = fetch_films()
     # Providing that the required conditions have been met, it renders the admin page
     return render_template('admin.html',result_message=result_message,films=films)
@@ -94,7 +95,8 @@ def random_film():
             "language": film[5],
             "imdb_score": film[6],
             "comment": film[7],
-            "imdb_link": film[8]
+            "imdb_link": film[8],
+            "tmdb_key": film[9]
         }
     else:
         film_data = None  # Return None if no films are found
@@ -112,7 +114,7 @@ def insert_film(name, year, runtime, genre, language, imdb_score, comment):
         # Cursor to look through database and execute SQL queries
         cur = conn.cursor()
         # First prepares the SQL query using a parameterised query. I split it up because it became very complex and hard to read when the cur execution occured with the query written out in the same line.
-        query = "INSERT INTO hhdata (Name, Year, Runtime, Genre, Language, IMDBScore, Comment) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        query = "INSERT INTO hhdata (Name, Year, Runtime, Genre, Language, IMDBScore, Comment, TMDBkey) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         # SQL exection that inserts the form data into the database table in the relevant columns
         cur.execute(query, (name, year, runtime, genre, language, imdb_score, comment))
         # This insertion is committed to the database
