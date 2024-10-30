@@ -86,6 +86,7 @@ def random_film():
     films = cur.fetchall()
 
     if films:
+        # im doing the trailers here 
         film = random.choice(films)
         film_data = {
             "title": film[1],
