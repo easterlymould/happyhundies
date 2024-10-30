@@ -95,6 +95,7 @@
                     <th>IMDB Score</th>
                     <th>Comment</th>
                     <th>IMDB Link</th>
+                    <th>Trailer</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,9 +110,14 @@
                         <td>{{ film[7] }}</td>
                         <td>
                             {% if film[8] %}
-                                <a href="{{ film[8] }}" target="_blank" class="btn btn-primary">Link</a>
+                                <a href="{{ film[8] }}" target="_blank" class="btn btn-primary">IMDB Link</a>
                             {% endif %}
                         </td>
+                        <!-- <td>
+                            {% if film[9] %}
+                                <button onclick="fetchTrailer('{{ film[9]|int }}')" class="btn btn-primary">YouTube Trailer</button>
+                            {% endif %}
+                        </td> -->
                     </tr>
                 {% else %}
                     <tr>
@@ -134,7 +140,18 @@
                     <p class="card-text"><strong>Language:</strong> {{ film[5] }}</p>
                     <p class="card-text"><strong>IMDB Score:</strong> {{ film[6] }}</p>
                     <p class="card-text"><strong>Comment:</strong> {{ film[7] }}</p>
+                    {% if film[8] %}
                     <p class="card-text"><strong>Link:</strong> <a href="{{ film[8] }}" target="_blank">IMDB</a></p>
+                    {% else %}
+                    <!-- Empty if no IMDb link -->
+                    <p class="card-text"><strong>Link:</strong> No IMDb link yet</p>
+                    {% endif %}
+                    {% if film[9] %}
+                    <p class="card-text youtube-trailer" style="display: none;">
+                        <strong>Trailer:</strong> 
+                        <a href="#" target="_blank" class="youtube-trailer-link">Watch Trailer on YouTube</a>
+                    </p>
+                    {% endif %}
                 </div>
             </div>
         {% else %}
@@ -144,5 +161,27 @@
 
     <a href="{{ url_for('index') }}"><button type="button" class="btn btn-primary">Return to Homepage</button></a>
 </div>
+<script>
+    function fetchTrailer(tmdb_id) {
+    // Fetch the trailer URL from the server
+    fetch(`/get_trailer/${tmdb_id}`)
+        .then(response => {
+            if (!response.ok) throw new Error("Trailer not found");
+            return response.json();
+        })
+        .then(data => {
+            if (data.trailer_url) {
+                // Open the trailer URL in a new tab
+                window.open(data.trailer_url, '_blank');
+            } else {
+                alert("No trailer available for this film.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching trailer:", error);
+            alert("Trailer could not be fetched.");
+        });
+}
+    </script>
 </body>
 </html>

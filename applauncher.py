@@ -2,11 +2,37 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import random
 import os
+import requests
+import datetime
 
 app = Flask(__name__)
 
 #This my SQLite database, containing two tables directly relevant for my coursework. One that hosts data about films, which uploaded to DB Browser as a CSV and formatted to comply with my requirements. The other contains my user information for single user authentication.
 DATABASE = 'HHActualTest.db'
+BEARER_TOKEN = "API_KEY"
+
+def fetch_trailer_url(tmdb_id):
+    url = f"https://api.themoviedb.org/3/movie/{tmdb_id}/videos?language=en-US"
+    headers = {
+        "accept": "application/json",
+        "Authorization": f"Bearer {BEARER_TOKEN}"
+    }
+    
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        videos = response.json().get("results", [])
+        for video in videos:
+            if video["type"] == "Trailer" and video["site"] == "YouTube":
+                return f"https://www.youtube.com/watch?v={video['key']}"
+    return None
+
+@app.route('/get_trailer/<int:tmdb_id>')
+def get_trailer(tmdb_id):
+    trailer_url = fetch_trailer_url(tmdb_id)
+    if trailer_url:
+        return {"trailer_url": trailer_url}
+    return {"trailer_url": None}, 404
+
 
 # This is a function that I will use for the authentication of account. Website only requires single admin access in this form, as I am the only one who will be submitting and deleting films from the records. Takes 'username' and 'password' as the inputs.
 def check_credentials(username, password):
@@ -86,7 +112,6 @@ def random_film():
     films = cur.fetchall()
 
     if films:
-        # im doing the trailers here 
         film = random.choice(films)
         film_data = {
             "title": film[1],
@@ -136,6 +161,7 @@ def insert_film(name, year, runtime, genre, language, imdb_score, comment):
 # Function for retrieving films from the database, with opportunity to create custom parameter queries to the database using the filter form, as well as also fetching the full film list.
 def fetch_films(decade=None, genre=None, runtime=None, language=None, imdb_score=None):
     try:
+        print(datetime.datetime.now())
         conn = sqlite3.connect(DATABASE)
         cur = conn.cursor()
         query = "SELECT * FROM hhdata WHERE 1=1"
@@ -166,11 +192,13 @@ def fetch_films(decade=None, genre=None, runtime=None, language=None, imdb_score
 
         cur.execute(query, tuple(film_parameters))
         films = cur.fetchall()
+        print(datetime.datetime.now())
     except Exception as e:
         films = []
         print(f"Error during your search: {str(e)}")
     finally:
         conn.close()
+        # print(films)
         return films
 
 
@@ -220,19 +248,34 @@ def randomfilms():
 
 # App route for displaying the list of films https://www.digitalocean.com/community/tutorials/processing-incoming-request-data-in-flask
 @app.route('/film_list')
-# Function for displaying films. It uses requests.args.get to retrieve the query parameters from the URL/form filter request and declares them as variables that can be used to then fetch the films
 def film_list():
+    # Retrieve filtering criteria from URL parameters
     decade = request.args.get('decade', 'any')
     genre = request.args.get('genre', 'any')
     runtime = request.args.get('runtime', 'any')
     language = request.args.get('language', 'any')
     imdb_score = request.args.get('imdb_score', 'any')
 
-# Fetch_films function called, to then retrieve the films that meet the criteria from the database.
-    films = fetch_films(decade=decade,genre=genre, runtime=runtime,language=language,imdb_score=imdb_score)
+    # Fetch films that meet the filtering criteria
+    films = fetch_films(decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score)
 
-# Film list template is rendered with the films on the page
-    return render_template('film_list.html', films=films, decade=decade,genre=genre, runtime=runtime,language=language,imdb_score=imdb_score)
+    # Add trailer URL for each film using tmdb_id at the correct index
+    films_with_trailers = [
+        film + (fetch_trailer_url(film[8]),)  # Access tmdb_id by its index in the tuple
+        for film in films
+    ]
+
+    # Render the film list template with the additional trailer data
+    return render_template(
+        'film_list.html',
+        films=films_with_trailers,
+        decade=decade,
+        genre=genre,
+        runtime=runtime,
+        language=language,
+        imdb_score=imdb_score
+    )
+
 
 
 if __name__ == '__main__':
