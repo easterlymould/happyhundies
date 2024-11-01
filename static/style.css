@@ -45,6 +45,22 @@
   background-color: #004c18;
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px; /* Adds space between pagination buttons */
+}
+
+.return-homepage {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+
+
 /* Responsive adjustments for mobile devices */
 @media (max-width: 768px) {
   .header-navbar {
@@ -145,6 +161,18 @@
 
 .plucky-container .btn {
   margin-bottom: 10px;
+}
+
+/* Green button styles */
+.btn-primary, .btn-secondary {
+  background-color: #006c1b; /* Same green as the header */
+  border-color: #006c1b;
+  color: white;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+  background-color: #004c18; /* Slightly darker green on hover */
+  border-color: #004c18;
 }
 
 .table {
