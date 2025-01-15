@@ -77,9 +77,9 @@ def random_film():
     cur = conn.cursor()
 
     if genre:
-        # Modify the SQL query to filter films containing the specified genre in the genre column
-        sql_query = "SELECT * FROM hhdata WHERE genre LIKE ?"
-        cur.execute(sql_query, ('%' + genre + '%',))
+        # Dynamically handle spaces in the Genre column
+        sql_query = "SELECT * FROM hhdata WHERE (',' || REPLACE(Genre, ' ', '') || ',' LIKE ?)"
+        cur.execute(sql_query, (f"%,{genre.strip().replace(' ', '')},%",))
     else:
         # If no genre is specified, return any film
         cur.execute("SELECT * FROM hhdata")
@@ -154,9 +154,9 @@ def fetch_films_with_pagination(decade, genre, runtime, language, imdb_score, of
         count_query += " AND Runtime BETWEEN 90 AND 101"
 
     if genre and genre != 'any' and genre.strip():
-        query += " AND Genre LIKE ?"
-        count_query += " AND Genre LIKE ?"
-        film_parameters.append(f"%{genre.strip()}%")
+        query += " AND (',' || REPLACE(Genre, ' ', '') || ',' LIKE ?)"
+        count_query += " AND (',' || REPLACE(Genre, ' ', '') || ',' LIKE ?)"
+        film_parameters.append(f"%,{genre.strip().replace(' ', '')},%")
 
     if language and language != 'any' and language.strip():
         query += " AND Language LIKE ?"
@@ -235,6 +235,17 @@ def film_list():
         cur.execute("SELECT DISTINCT Language FROM hhdata ORDER BY Language")
         languages = [row[0] for row in cur.fetchall() if row[0]]
 
+        cur.execute("SELECT DISTINCT Genre FROM hhdata")
+        raw_genres = [row[0] for row in cur.fetchall() if row[0]]
+
+        # Split genres by comma, strip whitespace, and collect unique genres
+        unique_genres = set()
+        for genres in raw_genres:
+            unique_genres.update([genre.strip() for genre in genres.split(',')])
+
+        # Sort the unique genres alphabetically for better dropdown readability
+        unique_genres = sorted(unique_genres)
+
     # Get page number from query parameters
     page = request.args.get('page', 1, type=int)
     films_per_page = 15  # Set films per page
@@ -262,7 +273,8 @@ def film_list():
         runtime=runtime,
         language=language,
         imdb_score=imdb_score,
-        languages=languages
+        languages=languages,
+        genres=unique_genres
     )
 
 
