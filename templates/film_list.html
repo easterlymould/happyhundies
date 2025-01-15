@@ -148,14 +148,24 @@
     </div>
 
     <div class="pagination">
+        <!-- Previous Page Button -->
         {% if page > 1 %}
             <a href="{{ url_for('film_list', page=page-1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">Previous</a>
+        {% else %}
+            <span class="btn btn-secondary disabled">Previous</span>
         {% endif %}
         
-        <span>Page {{ page }} of {{ total_pages }}</span>
+        <!-- Page Numbers -->
+        {% for p in range(1, total_pages + 1) %}
+            <a href="{{ url_for('film_list', page=p, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}"
+               class="btn {% if p == page %}btn-primary{% else %}btn-light{% endif %}">{{ p }}</a>
+        {% endfor %}
         
+        <!-- Next Page Button -->
         {% if page < total_pages %}
             <a href="{{ url_for('film_list', page=page+1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">Next</a>
+        {% else %}
+            <span class="btn btn-secondary disabled">Next</span>
         {% endif %}
     </div>
 
