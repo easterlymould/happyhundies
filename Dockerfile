@@ -11,10 +11,8 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 8080 available to the world outside this container
+RUN mkdir -p /app/data
+
 EXPOSE 8080
 
-# Define environment variable
-ENV PORT 8080
-
-# Run applauncher.py when the container launches
-CMD ["python", "applauncher.py"]
+CMD ["gunicorn", "wsgi:application", "--bind", "0.0.0.0:8080", "--workers", "2"]
