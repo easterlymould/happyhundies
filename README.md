@@ -31,7 +31,3 @@ fly deploy
 fly ssh sftp put HHActualTest.db /app/data/HHActualTest.db
 fly machine restart <machine-id>
 ```
-
-## Admin
-
-There is an admin area at `/admin` for adding and deleting films. Credentials are stored in the `users` table of the database.
