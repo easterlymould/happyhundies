@@ -2,12 +2,28 @@ from flask import Flask, render_template, request, jsonify
 import sqlite3
 import random
 import os
+import requests
 from math import ceil
+
+# Load .env file if present
+def load_env():
+    env_path = os.path.join(os.path.dirname(__file__), '.env')
+    if os.path.exists(env_path):
+        with open(env_path) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, val = line.split('=', 1)
+                    os.environ.setdefault(key.strip(), val.strip())
+
+load_env()
 
 app = Flask(__name__)
 
+TMDB_API_KEY = os.environ.get('TMDB_API_KEY')
+
 #This my SQLite database, containing two tables directly relevant for my coursework. One that hosts data about films, which uploaded to DB Browser as a CSV and formatted to comply with my requirements. The other contains my user information for single user authentication.
-DATABASE = 'HHActualTest.db'
+DATABASE = '/app/data/HHActualTest.db' if os.path.isdir('/app/data') else 'HHActualTest.db'
 
 # This is a function that I will use for the authentication of account. Website only requires single admin access in this form, as I am the only one who will be submitting and deleting films from the records. Takes 'username' and 'password' as the inputs.
 def check_credentials(username, password):
@@ -276,6 +292,43 @@ def film_list():
         languages=languages,
         genres=unique_genres
     )
+
+
+@app.route('/trailer')
+def trailer():
+    if not TMDB_API_KEY:
+        return jsonify({"error": "TMDB API key not configured"}), 500
+
+    tmdb_key = request.args.get('tmdb_key', '')
+    title = request.args.get('title', '')
+    year = request.args.get('year', '')
+
+    if tmdb_key:
+        tmdb_id = int(float(tmdb_key))
+    else:
+        search = requests.get(
+            "https://api.themoviedb.org/3/search/movie",
+            params={"api_key": TMDB_API_KEY, "query": title, "year": year, "language": "en-US"}
+        )
+        if not search.ok or not search.json().get("results"):
+            return jsonify({"error": "Film not found on TMDB"}), 404
+        tmdb_id = search.json()["results"][0]["id"]
+
+    videos_resp = requests.get(
+        f"https://api.themoviedb.org/3/movie/{tmdb_id}/videos",
+        params={"api_key": TMDB_API_KEY, "language": "en-US"}
+    )
+    if not videos_resp.ok:
+        return jsonify({"error": "TMDB request failed"}), 502
+
+    videos = videos_resp.json().get("results", [])
+    trailer = next(
+        (v for v in videos if v["type"] == "Trailer" and v["site"] == "YouTube"),
+        None
+    )
+    if trailer:
+        return jsonify({"youtube_key": trailer["key"]})
+    return jsonify({"error": "No trailer found"}), 404
 
 
 if __name__ == '__main__':

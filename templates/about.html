@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script defer data-domain="happyhundies.com" src="https://plausible.io/js/script.outbound-links.js"></script>
+    <script defer data-domain="happyhundies.com" src="https://plausible.io/js/script.outbound-links.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='HappyHundies.png') }}">
     <title>Happy Hundies - About</title>
 </head>
@@ -13,23 +13,24 @@
 <body>
     <header class="header-navbar">
         <a href="/" class="logo-link">
-            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" class="header-logo">
+            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo">
+            <span class="logo-name">Happy Hundies</span>
         </a>
         <nav class="navbar">
             <div class="navbar-links">
                 <a href="/">Home</a>
                 <a class="active" href="/about">About</a>
-                <a href="/randomfilms">Random Films</a>
-                <a href="/film_list">Film List</a>
+                <a href="/randomfilms"><span class="nav-short">Random</span><span class="nav-full">Random Films</span></a>
+                <a href="/film_list"><span class="nav-short">Films</span><span class="nav-full">Film List</span></a>
             </div>
         </nav>
     </header>
-    <div class="intro-container">
-    <p>Happy Hundies is a website celebrating the films that manage to do a lot with a little amount of time. That's not to say we don't love longer films as well, but it felt high time for a dedicated website for those films perfect for a mid-week watch</p>
-    <p>It is also an ongoing project that I built for university and am trying to add to bit by bit until it inevitably becomes everyone's new default homepage when they open their browsers</p>
+
+    <div class="page-content">
+        <div class="about-card">
+            <p>Happy Hundies is a website celebrating the films that manage to do a lot with a little amount of time.</p>
+            <p>That's not to say we don't love longer films as well, but it felt high time for a dedicated website for those films perfect for a mid-week watch.</p>
+        </div>
     </div>
-
-
-</main> 
 </body>
 </html>

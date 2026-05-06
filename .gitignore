@@ -1,4 +1,6 @@
 __pyache__
 myenv
+venv
 .DS_Store
 __pycache__/*
+.env

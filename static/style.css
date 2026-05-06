@@ -1,295 +1,479 @@
-/* Base styles for the header and navbar */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=Literata:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Literata', Georgia, serif;
+  background-color: #f8f9f6;
+  color: #1a1a1a;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Navbar ── */
 .header-navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 12px 32px;
   background-color: #fff;
-  box-sizing: border-box;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.logo-link img, .index-logo img {
-  height: 80px; /* Adjust the height as needed */
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
 }
 
-.logo-link, .index-logo {
-  flex-shrink: 0; /* Prevents the logo from shrinking */
+.logo-link img {
+  height: 40px;
+  display: block;
+}
+
+.logo-link .logo-name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #006c1b;
+  white-space: nowrap;
+}
+
+.logo-link:hover .logo-name {
+  color: #006c1b;
 }
 
 .navbar {
   display: flex;
   align-items: center;
-  flex-grow: 1;
+  margin-left: auto;
 }
 
 .navbar-links {
   display: flex;
-  justify-content: space-between; /* Distributes space evenly around links */
   align-items: center;
-  flex-grow: 1;
-  background-color: #006c1b;
-  border-radius: 10px;
-  padding: 0 10px; /* Padding on the sides of the navbar */
-  box-sizing: border-box;
+  gap: 4px;
 }
 
 .navbar-links a {
-  color: white;
+  font-family: 'Literata', Georgia, serif;
+  color: #374151;
   text-decoration: none;
-  padding: 10px 15px; /* Adjust padding for better spacing */
-  font-size: 16px;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.15s, color 0.15s;
 }
 
-.navbar-links a.active, .navbar-links a:hover {
-  background-color: #004c18;
+.navbar-links a:hover {
+  background-color: #f0fdf4;
+  color: #006c1b;
 }
 
-.pagination {
+.navbar-links a.active {
+  background-color: #006c1b;
+  color: #fff;
+}
+
+/* ── Hero (index only) ── */
+.hero {
+  text-align: center;
+  padding: 60px 12px 40px;
+  background: linear-gradient(160deg, #006c1b 0%, #004d13 100%);
+  color: #fff;
+}
+
+.hero h1 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #fff;
+  letter-spacing: -1px;
+}
+
+.hero p.tagline {
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.75);
+  margin: 0 0 32px;
+}
+
+.hero-actions {
   display: flex;
+  gap: 12px;
   justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-  gap: 10px; /* Adds space between pagination buttons */
+  flex-wrap: wrap;
 }
 
-.return-homepage {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+.btn-hero-primary {
+  background: #fff;
+  color: #006c1b;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.15s, transform 0.15s;
+  display: inline-block;
 }
 
-
-
-/* Responsive adjustments for mobile devices */
-@media (max-width: 768px) {
-  .header-navbar {
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-  }
-
-  .logo-link img, .index-logo img {
-    height: 50px;
-  }
+.btn-hero-primary:hover {
+  background: #f0fdf4;
+  color: #005516;
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
-/* Base style for the index header logo */
-.header-container {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-  background-color: #fff; /* Consistent with other headers */
-  box-sizing: border-box;
+.btn-hero-secondary {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-weight: 500;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  border: 1px solid rgba(255,255,255,0.3);
+  transition: background 0.15s, transform 0.15s;
+  display: inline-block;
 }
 
-.header-logo {
-  height: 80px; /* Standard height */
-  margin-right: 20px; /* Space between the logo and the text */
+.btn-hero-secondary:hover {
+  background: rgba(255,255,255,0.25);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-1px);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .header-logo {
-    height: 50px; /* Smaller logo on mobile */
-  }
-
-  .header-container {
-    flex-direction: column; /* Stack logo and text vertically on smaller screens */
-    align-items: center; /* Center alignment for all items */
-    text-align: center; /* Center align the text */
-  }
-
-  .header-container h1, .header-container h2 {
-    margin: 10px 0; /* Adjust margin for better spacing */
-  }
+/* ── Page content wrapper ── */
+.page-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 32px;
 }
 
-/* Flexbox container for plucky-container and random-film-card */
-.container {
+/* ── Intro card (homepage) ── */
+.intro-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px 36px;
+  text-align: center;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.intro-card p {
+  margin: 0 0 12px;
+}
+
+.intro-card p:last-child {
+  margin-bottom: 0;
+}
+
+.intro-card a {
+  color: #006c1b;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.intro-card a:hover {
+  text-decoration: underline;
+}
+
+/* ── About ── */
+.about-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px 36px;
+  line-height: 1.8;
+  color: #374151;
+}
+
+.about-card p {
+  margin: 0 0 16px;
+}
+
+.about-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Section headings ── */
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #006c1b;
+  display: inline-block;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  background-color: #006c1b;
+  border-color: #006c1b;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+  background-color: #005516;
+  border-color: #005516;
+  color: #fff;
+}
+
+.btn-secondary {
+  background-color: #fff;
+  border-color: #d1d5db;
+  color: #374151;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.15s;
+}
+
+.btn-secondary:hover {
+  background-color: #f3f4f6;
+  color: #111827;
+}
+
+.btn-secondary.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* ── Random films page ── */
+.randomfilms-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 32px;
+}
+
+.plucky-quote {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-style: italic;
+  color: #111827;
+  margin: 0 0 24px;
+}
+
+.randomfilms-layout {
   display: flex;
   flex-direction: column;
-  margin: 10px auto;
-  padding: 20px;
-  box-sizing: border-box;
-  max-width: 100%;
+  gap: 24px;
 }
 
-@media (min-width: 992px) {
-  .container {
+@media (min-width: 768px) {
+  .randomfilms-layout {
     flex-direction: row;
-    justify-content: space-between;
+    align-items: flex-start;
   }
 }
 
 .plucky-container {
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 10px;
-  box-sizing: border-box;
-  margin-bottom: 20px;
-}
-
-.form-container, .plucky-container {
-  max-width: 100%;
-}
-
-@media (min-width: 992px) {
-  .plucky-container {
-    flex: 1;
-    margin-right: 20px;
-  }
-}
-
-/* Additional UI styles */
-.filmlist-page-container {
-  margin: 10px auto;
-  padding: 20px;
-  background-color: #f5f5f5; /* Ensure visibility with different background */
-  border-radius: 10px;
-  box-sizing: border-box;
-  max-width: 100%;
-}
-
-.intro-container {
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #f5f5f5; /* Ensure visibility with different background */
-  border-radius: 10px;
-  box-sizing: border-box;
-  max-width: 90%;
-}
-
-.filmlist-page-container {
-  background-color: #ffffff; /* Distinct background for the film list container */
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  flex: 1;
 }
 
 .plucky-container p {
-  margin-bottom: 20px;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 16px;
 }
 
-.plucky-container .btn {
-  margin-bottom: 10px;
+.genre-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
 }
 
-/* Green button styles */
-.btn-primary, .btn-secondary {
-  background-color: #006c1b; /* Same green as the header */
-  border-color: #006c1b;
-  color: white;
+.random-film-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px;
+  flex: 1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s;
 }
 
-.btn-primary:hover, .btn-secondary:hover {
-  background-color: #004c18; /* Slightly darker green on hover */
-  border-color: #004c18;
+.random-film-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+.random-film-card h2 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.random-film-card .card-text {
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.random-film-card a {
+  color: #006c1b;
+  font-weight: 500;
+}
+
+/* ── Film list ── */
+.filmlist-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 32px;
+}
+
+.search-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 28px;
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-size: 0.9rem;
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid #e5e7eb;
   text-align: left;
-  padding: 10px;
+  padding: 10px 14px;
 }
 
 th {
   background-color: #006c1b;
-  color: white;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-.form-container {
-  background-color: #f5f5f5;
-  padding: 20px;
+tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+tbody tr:hover {
+  background-color: #f0fdf4;
+}
+
+/* ── Mobile cards ── */
+.card {
+  border: 1px solid #e5e7eb;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
-  box-sizing: border-box;
+  background: #fff;
 }
 
-.form-field {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  box-sizing: border-box;
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
 }
 
-/* Specific styles for random film card */
-.random-film-card {
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-  word-wrap: break-word;
-  padding: 20px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+.card-text {
+  font-size: 0.9rem;
+  color: #374151;
 }
 
-.random-film-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 16px rgba(0,0,0,0.2), 0 2px 5px rgba(0,0,0,0.3);
-}
-
-/* Flexbox styles */
-.d-flex {
+/* ── Pagination ── */
+.pagination {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 28px 0;
 }
 
-.flex-column {
-  flex-direction: column;
+/* ── Return to homepage ── */
+.return-homepage {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 24px;
 }
 
-.flex-lg-row {
-  flex-direction: row;
+/* ── Form controls ── */
+.form-control {
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  color: #374151;
 }
 
-.justify-content-between {
-  justify-content: space-between;
+.form-control:focus {
+  border-color: #006c1b;
+  box-shadow: 0 0 0 3px rgba(0,108,27,0.12);
 }
 
-.align-items-start {
-  align-items: flex-start;
-}
-
-/* Ensure the plucky container and random film card are side by side on larger screens */
-@media (min-width: 992px) {
-  .plucky-container {
-    flex: 1;
-    margin-right: 20px;
-  }
-
-  .random-film-card {
-    flex: 1;
-    margin-left: 20px;
-  }
-}
-
-/* Responsive adjustments for the film list view */
+/* ── Responsive ── */
 @media (max-width: 768px) {
-  .d-none {
-    display: none !important;
+  .header-navbar {
+    padding: 10px 12px;
   }
 
-  .d-block {
-    display: block !important;
+  .logo-name {
+    display: none;
+  }
+
+  .navbar-links a {
+    padding: 6px 8px;
+    font-size: 13px;
+  }
+
+  .nav-short { display: inline; }
+  .nav-full  { display: none; }
+
+  .hero {
+    padding: 48px 16px 36px;
+  }
+
+  .hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .intro-card, .about-card {
+    padding: 24px 20px;
+  }
+
+  .filmlist-wrapper {
+    padding: 20px 16px;
   }
 }
 
 @media (min-width: 769px) {
-  .d-none {
-    display: block !important;
-  }
+  .nav-short { display: none; }
+  .nav-full  { display: inline; }
+}
 
-  .d-block {
-    display: none !important;
-  }
+/* Bootstrap visibility helpers (preserve existing behaviour) */
+@media (max-width: 767px) {
+  .d-md-block { display: none !important; }
+  .d-md-none  { display: block !important; }
+}
+@media (min-width: 768px) {
+  .d-md-block { display: block !important; }
+  .d-md-none  { display: none !important; }
 }

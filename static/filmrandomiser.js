@@ -14,6 +14,21 @@ $(document).ready(function() {
                 $('#filmIMDBLink').attr('href', data.imdb_link);
                 $('#filmDetails').show();
 
+                // Reset trailer
+                $('#trailerContainer').hide();
+                $('#trailerFrame').attr('src', '');
+
+                // Fetch trailer — use tmdb_key if available, otherwise search by title+year
+                var trailerParams = data.tmdb_key
+                    ? { tmdb_key: data.tmdb_key }
+                    : { title: data.title, year: data.year };
+                $.getJSON('/trailer', trailerParams, function(trailer) {
+                    if (trailer.youtube_key) {
+                        $('#trailerFrame').attr('src', 'https://www.youtube.com/embed/' + trailer.youtube_key);
+                        $('#trailerContainer').show();
+                    }
+                });
+
                 // Scroll to the film details card on small screens if it's not the initial load
                 if (!initialLoad && $(window).width() < 992) {
                     $('html, body').animate({

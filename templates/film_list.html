@@ -6,6 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .trailer-modal-backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center; }
+        .trailer-modal-backdrop.open { display:flex; }
+        .trailer-modal { background:#000; border-radius:10px; overflow:hidden; width:90%; max-width:800px; position:relative; }
+        .trailer-modal-close { position:absolute; top:10px; right:14px; color:#fff; font-size:1.5rem; cursor:pointer; z-index:10; line-height:1; }
+        .trailer-modal iframe { display:block; width:100%; height:450px; border:0; }
+    </style>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='HappyHundies.png') }}">
     <title>Happy Hundies - Film List</title>
 </head>
@@ -13,171 +20,225 @@
 <body>
     <header class="header-navbar">
         <a href="/" class="logo-link">
-            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo" style="height: 80px;">
+            <img src="{{ url_for('static', filename='HappyHundies.png') }}" alt="Happy Hundies Logo">
+            <span class="logo-name">Happy Hundies</span>
         </a>
         <nav class="navbar">
             <div class="navbar-links">
                 <a href="/">Home</a>
                 <a href="/about">About</a>
-                <a href="/randomfilms">Random Films</a>
-                <a class="active" href="/film_list">Film List</a>
+                <a href="/randomfilms"><span class="nav-short">Random</span><span class="nav-full">Random Films</span></a>
+                <a class="active" href="/film_list"><span class="nav-short">Films</span><span class="nav-full">Film List</span></a>
             </div>
         </nav>
     </header>
-<div class="filmlist-page-container">  
-    <h2>Search Films</h2>
-    <div class="form-container">
-        <form action="/film_list" method="get">
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="decade">Decade:</label>
-                    <select name="decade" class="form-control">
-                        <option value="any" {% if not decade or decade == 'any' %}selected{% endif %}>Any</option>
-                        <option value="1950s" {% if decade == '1950s' %}selected{% endif %}>1950s</option>
-                        <option value="1960s" {% if decade == '1960s' %}selected{% endif %}>1960s</option>
-                        <option value="1970s" {% if decade == '1970s' %}selected{% endif %}>1970s</option>
-                        <option value="1980s" {% if decade == '1980s' %}selected{% endif %}>1980s</option>
-                        <option value="1990s" {% if decade == '1990s' %}selected{% endif %}>1990s</option>
-                        <option value="2000s" {% if decade == '2000s' %}selected{% endif %}>2000s</option>
-                        <option value="2010s" {% if decade == '2010s' %}selected{% endif %}>2010s</option>
-                        <option value="2020s" {% if decade == '2020s' %}selected{% endif %}>2020s</option>
-                    </select>
+
+    <div class="filmlist-wrapper">
+        <div class="search-card">
+            <span class="section-title">Search Films</span>
+            <form action="/film_list" method="get">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="decade">Decade</label>
+                        <select name="decade" id="decade" class="form-control">
+                            <option value="any" {% if not decade or decade == 'any' %}selected{% endif %}>Any</option>
+                            <option value="1950s" {% if decade == '1950s' %}selected{% endif %}>1950s</option>
+                            <option value="1960s" {% if decade == '1960s' %}selected{% endif %}>1960s</option>
+                            <option value="1970s" {% if decade == '1970s' %}selected{% endif %}>1970s</option>
+                            <option value="1980s" {% if decade == '1980s' %}selected{% endif %}>1980s</option>
+                            <option value="1990s" {% if decade == '1990s' %}selected{% endif %}>1990s</option>
+                            <option value="2000s" {% if decade == '2000s' %}selected{% endif %}>2000s</option>
+                            <option value="2010s" {% if decade == '2010s' %}selected{% endif %}>2010s</option>
+                            <option value="2020s" {% if decade == '2020s' %}selected{% endif %}>2020s</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="runtime">Runtime (minutes)</label>
+                        <select name="runtime" id="runtime" class="form-control">
+                            <option value="any" {% if not runtime or runtime == 'any' %}selected{% endif %}>Any</option>
+                            <option value="under_90" {% if runtime == 'under_90' %}selected{% endif %}>Under 90</option>
+                            <option value="90_to_101" {% if runtime == '90_to_101' %}selected{% endif %}>90 to 100</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="genre">Genre</label>
+                        <select name="genre" id="genre" class="form-control">
+                            <option value="any" {% if genre == 'any' %}selected{% endif %}>Any</option>
+                            {% for g in genres %}
+                                <option value="{{ g }}" {% if genre == g %}selected{% endif %}>{{ g }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="runtime">Runtime (minutes):</label>
-                    <select name="runtime" class="form-control">
-                        <option value="any" {% if not runtime or runtime == 'any' %}selected{% endif %}>Any</option>
-                        <option value="under_90" {% if runtime == 'under_90' %}selected{% endif %}>Under 90</option>
-                        <option value="90_to_101" {% if runtime == '90_to_101' %}selected{% endif %}>90 to 100</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="language">Language</label>
+                        <select name="language" id="language" class="form-control">
+                            <option value="any" {% if language == 'any' %}selected{% endif %}>Any</option>
+                            {% for lang in languages %}
+                                <option value="{{ lang }}" {% if language == lang %}selected{% endif %}>{{ lang }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="imdb_score">IMDB Score</label>
+                        <select name="imdb_score" id="imdb_score" class="form-control">
+                            <option value="any" {% if not imdb_score or imdb_score == 'any' %}selected{% endif %}>Any</option>
+                            <option value="7.0" {% if imdb_score == '7.0' %}selected{% endif %}>7.0+</option>
+                            <option value="7.5" {% if imdb_score == '7.5' %}selected{% endif %}>7.5+</option>
+                            <option value="8.0" {% if imdb_score == '8.0' %}selected{% endif %}>8.0+</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 d-flex align-items-end">
+                        <div>
+                            <input type="submit" value="Search" class="btn btn-primary mr-2">
+                            <a href="{{ url_for('film_list') }}" class="btn btn-secondary">Reset</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="genre">Genre:</label>
-                    <select name="genre" class="form-control">
-                        <option value="any" {% if genre == 'any' %}selected{% endif %}>Any</option>
-                        {% for g in genres %}
-                            <option value="{{ g }}" {% if genre == g %}selected{% endif %}>{{ g }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="language">Language:</label>
-                    <select name="language" class="form-control">
-                        <option value="any" {% if language == 'any' %}selected{% endif %}>Any</option>
-                        {% for lang in languages %}
-                            <option value="{{ lang }}" {% if language == lang %}selected{% endif %}>{{ lang }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="imdb_score">IMDB Score:</label>
-                    <select name="imdb_score" class="form-control">
-                        <option value="any" {% if not imdb_score or imdb_score == 'any' %}selected{% endif %}>Any</option>
-                        <option value="7.0" {% if imdb_score == '7.0' %}selected{% endif %}>7.0+</option>
-                        <option value="7.5" {% if imdb_score == '7.5' %}selected{% endif %}>7.5+</option>
-                        <option value="8.0" {% if imdb_score == '8.0' %}selected{% endif %}>8.0+</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <input type="submit" value="Search" class="btn btn-primary">
-                    <a href="{{ url_for('film_list') }}" class="btn btn-secondary ml-2">Reset Filter</a>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-    <h2>Films List</h2>
-    
-    <!-- Table view for larger screens -->
-    <div class="table-responsive d-none d-md-block">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Year</th>
-                    <th>Runtime</th>
-                    <th>Genre</th>
-                    <th>Language</th>
-                    <th>IMDB Score</th>
-                    <th>Comment</th>
-                    <th>IMDB Link</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for film in films %}
+            </form>
+        </div>
+
+        <span class="section-title">Films</span>
+
+        <!-- Table view for larger screens -->
+        <div class="table-responsive d-none d-md-block">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{ film[1] }}</td>
-                        <td>{{ film[2] }}</td>
-                        <td>{{ film[3] }}</td>
-                        <td>{{ film[4] }}</td>
-                        <td>{{ film[5] }}</td>
-                        <td>{{ film[6] }}</td>
-                        <td>{{ film[7] }}</td>
-                        <td>
-                            {% if film[8] %}
-                                <a href="{{ film[8] }}" target="_blank" class="btn btn-primary">Link</a>
-                            {% endif %}
-                        </td>
+                        <th>Title</th>
+                        <th>Year</th>
+                        <th>Runtime</th>
+                        <th>Genre</th>
+                        <th>Language</th>
+                        <th>IMDB Score</th>
+                        <th>Comment</th>
+                        <th>IMDB</th>
+                        <th>Trailer</th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="8">No films found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    {% for film in films %}
+                        <tr>
+                            <td>{{ film[1] }}</td>
+                            <td>{{ film[2] }}</td>
+                            <td>{{ film[3] }}</td>
+                            <td>{{ film[4] }}</td>
+                            <td>{{ film[5] }}</td>
+                            <td>{{ film[6] }}</td>
+                            <td>{{ film[7] }}</td>
+                            <td>
+                                {% if film[8] %}
+                                    <a href="{{ film[8] }}" target="_blank" class="btn btn-primary btn-sm">Link</a>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-secondary btn-sm trailer-btn"
+                                    data-title="{{ film[1] }}"
+                                    data-year="{{ film[2] }}"
+                                    data-tmdbkey="{{ film[9] or '' }}">▶ Trailer</button>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="9">No films found.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <!-- Card view for smaller screens -->
-    <div class="card-deck d-block d-md-none">
-        {% for film in films %}
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h3 class="card-title">{{ film[1] }}</h3>
-                    <p class="card-text"><strong>Year:</strong> {{ film[2] }}</p>
-                    <p class="card-text"><strong>Runtime:</strong> {{ film[3] }}</p>
-                    <p class="card-text"><strong>Genre:</strong> {{ film[4] }}</p>
-                    <p class="card-text"><strong>Language:</strong> {{ film[5] }}</p>
-                    <p class="card-text"><strong>IMDB Score:</strong> {{ film[6] }}</p>
-                    <p class="card-text"><strong>Comment:</strong> {{ film[7] }}</p>
-                    <p class="card-text"><strong>Link:</strong> <a href="{{ film[8] }}" target="_blank">IMDB</a></p>
+        <!-- Card view for smaller screens -->
+        <div class="card-deck d-block d-md-none">
+            {% for film in films %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ film[1] }}</h3>
+                        <p class="card-text"><strong>Year:</strong> {{ film[2] }}</p>
+                        <p class="card-text"><strong>Runtime:</strong> {{ film[3] }}</p>
+                        <p class="card-text"><strong>Genre:</strong> {{ film[4] }}</p>
+                        <p class="card-text"><strong>Language:</strong> {{ film[5] }}</p>
+                        <p class="card-text"><strong>IMDB Score:</strong> {{ film[6] }}</p>
+                        <p class="card-text"><strong>Comment:</strong> {{ film[7] }}</p>
+                        <p class="card-text">
+                            <a href="{{ film[8] }}" target="_blank" class="btn btn-primary btn-sm">IMDB</a>
+                            <button class="btn btn-secondary btn-sm trailer-btn ml-1"
+                                data-title="{{ film[1] }}"
+                                data-year="{{ film[2] }}"
+                                data-tmdbkey="{{ film[9] or '' }}">▶ Trailer</button>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        {% else %}
-            <p>No films found.</p>
-        {% endfor %}
+            {% else %}
+                <p>No films found.</p>
+            {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('film_list', page=page-1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">← Previous</a>
+            {% else %}
+                <span class="btn btn-secondary disabled">← Previous</span>
+            {% endif %}
+
+            {% for p in range(1, total_pages + 1) %}
+                <a href="{{ url_for('film_list', page=p, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}"
+                   class="btn {% if p == page %}btn-primary{% else %}btn-secondary{% endif %}">{{ p }}</a>
+            {% endfor %}
+
+            {% if page < total_pages %}
+                <a href="{{ url_for('film_list', page=page+1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">Next →</a>
+            {% else %}
+                <span class="btn btn-secondary disabled">Next →</span>
+            {% endif %}
+        </div>
+
+        <div class="return-homepage">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to Home</a>
+        </div>
     </div>
 
-    <div class="pagination">
-        <!-- Previous Page Button -->
-        {% if page > 1 %}
-            <a href="{{ url_for('film_list', page=page-1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">Previous</a>
-        {% else %}
-            <span class="btn btn-secondary disabled">Previous</span>
-        {% endif %}
-        
-        <!-- Page Numbers -->
-        {% for p in range(1, total_pages + 1) %}
-            <a href="{{ url_for('film_list', page=p, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}"
-               class="btn {% if p == page %}btn-primary{% else %}btn-light{% endif %}">{{ p }}</a>
-        {% endfor %}
-        
-        <!-- Next Page Button -->
-        {% if page < total_pages %}
-            <a href="{{ url_for('film_list', page=page+1, decade=decade, genre=genre, runtime=runtime, language=language, imdb_score=imdb_score) }}" class="btn btn-secondary">Next</a>
-        {% else %}
-            <span class="btn btn-secondary disabled">Next</span>
-        {% endif %}
+    <!-- Trailer modal -->
+    <div class="trailer-modal-backdrop" id="trailerBackdrop">
+        <div class="trailer-modal">
+            <span class="trailer-modal-close" id="trailerClose">&times;</span>
+            <iframe id="trailerFrame" src="" allowfullscreen
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+            </iframe>
+        </div>
     </div>
 
-    <div class="return-homepage">
-        <a href="{{ url_for('index') }}">
-            <button type="button" class="btn btn-primary">Return to Homepage</button>
-        </a>
-    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).on('click', '.trailer-btn', function() {
+            var btn = $(this);
+            var tmdbkey = btn.data('tmdbkey');
+            var params = tmdbkey
+                ? { tmdb_key: tmdbkey }
+                : { title: btn.data('title'), year: btn.data('year') };
+
+            btn.text('Loading…').prop('disabled', true);
+
+            $.getJSON('/trailer', params, function(data) {
+                if (data.youtube_key) {
+                    $('#trailerFrame').attr('src', 'https://www.youtube.com/embed/' + data.youtube_key + '?autoplay=1');
+                    $('#trailerBackdrop').addClass('open');
+                } else {
+                    alert('No trailer found for this film.');
+                }
+            }).fail(function() {
+                alert('No trailer found for this film.');
+            }).always(function() {
+                btn.text('▶ Trailer').prop('disabled', false);
+            });
+        });
+
+        $('#trailerClose, #trailerBackdrop').on('click', function(e) {
+            if (e.target === this) {
+                $('#trailerBackdrop').removeClass('open');
+                $('#trailerFrame').attr('src', '');
+            }
+        });
+    </script>
 </body>
 </html>
